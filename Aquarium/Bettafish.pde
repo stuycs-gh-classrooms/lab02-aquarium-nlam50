@@ -24,7 +24,6 @@ class Bettafish extends Animal {
                 } else {
                     animals.remove(this);
                 }
-                break;
             }
         }
     }
