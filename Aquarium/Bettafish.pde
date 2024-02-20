@@ -1,36 +1,41 @@
 class Bettafish extends Animal {
-  ArrayList<Animal> animals;
+    PImage img3;
 
-  Bettafish(int x, int y, int w, int h, ArrayList<Animal> animals) {
-    super(x, y, w, h);
-    xspeed = 2;
-    yspeed = 2;
-    this.animals = animals;
-  }
+    Bettafish(int x, int y) {
+        super(x, y);
+        xspeed = 2;
+        yspeed = 2;
+        img3 = loadImage("bettafish.png");
+    }
 
-  void move() {
-    super.move();
-
-    for (int i = 0; i < animals.size(); i++) {
-        Animal otherAnimal = animals.get(i);
-        if (otherAnimal != this && otherAnimal.getClass() == Bettafish.class) {
-            if (ax + aw >= otherAnimal.ax &&
-                    ax <= otherAnimal.ax + otherAnimal.aw &&
-                    ay + ah >= otherAnimal.ay &&
-                    ay <= otherAnimal.ay + otherAnimal.ah) {
-                int sof = (int) random(2);
-                if (sof == 0) {
-                    animals.remove(i);
-                } else {
-                    animals.remove(this);
+    void move(Tank t) {
+        super.move(t);
+        for (int i = 0; i < t.a.size(); i++) {
+            Animal otherAnimal = t.a.get(i);
+            if (otherAnimal != this && otherAnimal instanceof Bettafish) {
+                if (collideWith(otherAnimal)) {
+                    int sof = (int) random(2);
+                    if (sof == 0) {
+                        t.a.remove(i);
+                    } else {
+                        t.a.remove(this);
+                    }
+                    t.numAnimals--;
                 }
             }
         }
     }
-  }
 
-  void display() {
-    fill(0, 0, 255);
-    rect(ax, ay, 40, 20);
-  }
+    void display() {
+        fill(0, 0, 255);
+        circle(ax, ay, aw / 3);
+        image(img3, ax - 50, ay - 50, 100, 100);
+    }
+
+    boolean collideWith(Animal other) {
+        return (ax + aw >= other.ax &&
+                ax <= other.ax + other.aw &&
+                ay + ah >= other.ay &&
+                ay <= other.ay + other.ah);
+    }
 }
